@@ -17,4 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/searching/{wager}', 'MsgController@searching');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('/message', 'MsgController');
+Route::resource('/match', 'MatchController');
