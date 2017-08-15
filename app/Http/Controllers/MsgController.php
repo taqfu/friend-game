@@ -37,7 +37,8 @@ class MsgController extends Controller
      */
     public function store(Request $request)
     {
-      echo $request['MsgInput'];
+      echo $request['matchID'];
+      echo $request['msgInput'];
 
     }
 
