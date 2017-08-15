@@ -16,7 +16,7 @@ class MsgController extends Controller
      */
     public function index()
     {
-	
+
     }
 
     /**
@@ -37,6 +37,7 @@ class MsgController extends Controller
      */
     public function store(Request $request)
     {
+      echo $request['MsgInput'];
 
     }
 
@@ -101,7 +102,7 @@ class MsgController extends Controller
 	            $user = User::find(Auth::user()->id);
 	            $user->updated_at = date('Y-m-d H:i:s');
                 $user->save();
-            }   
+            }
         }
         $matched_user = User::where('id', '!=', Auth::user()->id)->where('state', TRUE)->inRandomOrder()->first();
         var_dump($matched_user->username);
@@ -121,8 +122,8 @@ class MsgController extends Controller
 
 	    return View('User/searching', ['matched_user'=>$matched_user, 'wager'=>$wager]);
 
-        
-	    
+
+
     }
 
 }
