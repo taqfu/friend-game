@@ -37,8 +37,6 @@ class MsgController extends Controller
      */
     public function store(Request $request)
     {
-      echo $request['matchID'];
-      echo $request['msgInput'];
 
     }
 
@@ -106,10 +104,13 @@ class MsgController extends Controller
             }
         }
         $matched_user = User::where('id', '!=', Auth::user()->id)->where('state', TRUE)->inRandomOrder()->first();
-        var_dump($matched_user->username);
-        if (!empty($matched_user)){
+        $are_they_already_matched = !empty(Match:: where ("playerOne",$matched_user->id) ->orWhere("playerTwo",$matched_user->id)->get ());
+
+        //var_dump($matched_user->username, $are_they_already_matched);
+
+        if (!empty($matched_user && !$are_they_already_matched)){
             //$matched_user->state=0;
-            $matched_user->save();
+          $matched_user->save();
 	        $user = User::find(Auth::user()->id);
 	        //$user->state=0;
             $user->save();
