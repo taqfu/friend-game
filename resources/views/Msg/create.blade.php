@@ -13,9 +13,10 @@
         <input type='button' value='DEL' id='delKey' class='btn btn-danger btn-lg pull-right'/>
     </div>
     <div class='form-group'>
-        <input type='text' name='msgInput' id='msgInput' class='form-control' disabled/> 
+        <input type='text' name='msgInput' id='msgInput' class='form-control' readonly/>
         <input type='submit' class='btn btn-primary btn-block' value='Send'/>
     </div>
     <script>
     </script>
+
 </form>

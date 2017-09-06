@@ -11,12 +11,18 @@ setInterval(function(){
 	document.getElementById('countdown').innerHTML=countdown;
 	if (maxNumberOfCharacters==countdown.length && direction){
    		window.location.reload(1);
-	} 
+	}
 	if (countdown.length==1){
 	    direction=1;
 	}
 }, 500);
 </script><body>
+<div >
+Searching for another player willing to wager {{$wager}} points<span id='countdown'>...</span>
+</div >
+<div >
 
-Searching for a {{$wager}} point match<span id='countdown'>...</span>
+<a href = "{{route ("home")}}" >Back </a >
+</div >
+
 </body></html>
