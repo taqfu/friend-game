@@ -21,3 +21,5 @@ Route::get('/searching/{wager}', 'MsgController@searching');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/message', 'MsgController');
 Route::resource('/match', 'MatchController');
+Route::resource('/emoji', 'EmojiController');
+Route::resource('/inventory', 'InventoryController');

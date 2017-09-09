@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Emoji;
+use Auth;
 use Illuminate\Http\Request;
 
 class EmojiController extends Controller
@@ -24,7 +25,13 @@ class EmojiController extends Controller
      */
     public function create()
     {
-        //
+      if (Auth::guest()){
+          return view("need-to-be-logged-in");
+      }
+      if (Auth::user()->id!=1){
+          echo "Sorry. Only admins can do this.";
+      }
+        return view('Emoji/create');
     }
 
     /**
@@ -35,7 +42,25 @@ class EmojiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Auth::guest()){
+            return view("need-to-be-logged-in");
+        }
+        if (Auth::user()->id!=1){
+            echo "Sorry. Only admins can do this.";
+        }
+        $num_of_emojis = $request->numberOfEmojis;
+        for($emoji_num=1; $emoji_num<=$num_of_emojis;$emoji_num++){
+          $unicode_ref = $request->{"unicode".$emoji_num};
+
+          $check_emoji = Emoji::where('unicode', $unicode_ref)->first();
+          var_dump($unicode_ref, $check_emoji, "<BR>");
+
+          if ($check_emoji==null){
+              $emoji = new Emoji;
+              $emoji->unicode = $unicode_ref;
+              $emoji->save();
+          }          
+        }
     }
 
     /**
