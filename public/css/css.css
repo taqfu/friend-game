@@ -1,0 +1,9 @@
+@@font-face {
+    font-family: "Symbola";
+    src: url("/Symbola.ttff");
+}
+
+.emoji{
+  font-size:25px;;
+  font-family: "Symbola";
+}

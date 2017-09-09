@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Auth;
 use App\User;
 use App\Match;
+use App\Msg;
+
 use Illuminate\Http\Request;
 
 class MsgController extends Controller
@@ -37,7 +39,20 @@ class MsgController extends Controller
      */
     public function store(Request $request)
     {
+      $this ->validate($request, [
+        "matchID" => "required | integer",
+        "msgInput"=>"required"
+      ]);
+      //validate if message contains the appropriate characters
 
+      $message = new Msg;
+      $message->body = $request->msgInput;
+      $message->match_id = $request->matchID;
+      $message->room_id = 0;
+
+      $message->user_id = Auth::user()->id;
+      $message->save ();
+      return back();
     }
 
     /**
