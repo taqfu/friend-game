@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Auth;
+use App\Emoji;
 
 use App\Inventory;
 use Illuminate\Http\Request;
@@ -14,7 +16,10 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        //
+      return view("Inventory.index", [
+        "emojis_in_inventory"=>Inventory::where("user_id", Auth:: user ()->id)->where("emoji_slot", ">", 0)->orderBy("emoji_slot", "asc")->get (),
+
+      ]);
     }
 
     /**
@@ -22,9 +27,16 @@ class InventoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+     public function create(){
+
+
+     }
+    public function create_emoji($slot)
     {
-        //
+        return view("Inventory.create", [
+          "emojis"=>Emoji::get (),
+          "emoji_slot"=>$slot,
+        ]);
     }
 
     /**
@@ -35,7 +47,16 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      if (Auth::guest()){
+            return view("need-to-be-logged-in");
+      }
+      if ($request->emojiSlot>Auth::user()->emoji_slots){
+        trigger_error("User #" . Auth:: user ()->id . " is attempting to create an emoji for slot #". $request->emojiSlot .". He only has " . Auth::user()->emoji_slots . "slots.");
+      }
+        $inventory = Inventory::where('emoji_slot', $request->emojiSlot)->where('user_id', Auth:: user ()->id)->first();
+        $inventory->emoji_id =$request->emojiID;
+        $inventory->save();
+        return redirect(route("inventory.index"));
     }
 
     /**

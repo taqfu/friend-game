@@ -14,7 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get("/inventory/emoji/create/{slot}", 'InventoryController@create_emoji' )->name('inventory.create-emoji');
 Auth::routes();
 
 Route::get('/searching/{wager}', 'MsgController@searching');

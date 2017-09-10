@@ -6,10 +6,10 @@
     <div class='form-group'>
     </div>
     <div class='form-group'>
-        <input type='button' value='A' class='btn btn-lg msgKeys' />
-        <input type='button' value='B' class='btn btn-lg msgKeys' />
-        <input type='button' value='C' class='btn btn-lg msgKeys'/>
-        <input type='button' value='D' class='btn btn-lg msgKeys' />
+        @foreach ($inventory_emojis as $inventory_emoji)
+          <input type='button' value='&#x1f{{$inventory_emoji->emoji->unicode}}' class='btn btn-lg msgKeys' />
+
+        @endforeach
         <input type='button' value='DEL' id='delKey' class='btn btn-danger btn-lg pull-right'/>
     </div>
     <div class='form-group'>

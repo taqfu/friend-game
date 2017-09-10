@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Auth;
+use App\Inventory;
 use App\Match;
 use App\Msg;
 use Illuminate\Http\Request;
@@ -48,7 +49,11 @@ class MatchController extends Controller
     public function show(Match $match)
     {
         $messages = Msg::where('match_id', $match->id)->get();
-        return View('Match/show', ['match'=>$match, 'messages'=>$messages]);
+        return View('Match/show', [
+          'match'=>$match,
+          'messages'=>$messages,
+          'inventory_emojis'=>Inventory::where("user_id", Auth:: user ()->id)->where("emoji_slot", ">", 0)->orderBy("emoji_slot", "asc")->get ()
+        ]);
     }
 
     /**
