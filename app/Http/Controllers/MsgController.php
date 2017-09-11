@@ -119,23 +119,30 @@ class MsgController extends Controller
             }
         }
         $matched_user = User::where('id', '!=', Auth::user()->id)->where('state', TRUE)->inRandomOrder()->first();
-        $are_they_already_matched = !empty(Match:: where ("playerOne",$matched_user->id) ->orWhere("playerTwo",$matched_user->id)->get ());
 
-        //var_dump($matched_user->username, $are_they_already_matched);
-
-        if (!empty($matched_user && !$are_they_already_matched)){
-            //$matched_user->state=0;
-          $matched_user->save();
-	        $user = User::find(Auth::user()->id);
-	        //$user->state=0;
-            $user->save();
-            $match = new Match;
-            $match->playerOne = Auth::user()->id;
-            $match->playerTwo = $matched_user->id;
-            $match->wager = $wager;
-            $match->save();
-            return redirect()->action('MatchController@show', ['id'=>$match->id]);
+        if (!empty($matched_user)){
+          $are_they_already_matched =
+            count(Match:: whereNull('status')->where ("playerOne",$matched_user->id)
+              ->where("playerTwo", Auth::user()->id)->get ())>0
+            || count(Match:: whereNull('status')->where ("playerOne",Auth::user()->id)
+              ->where("playerTwo", $matched_user->id)->get ())>0;
+              var_dump(count(Match:: whereNull('status')->where ("playerOne",$matched_user->id)
+                ->where("playerTwo", Auth::user()->id)->get ())>0);
+          if (!$are_they_already_matched){
+              //$matched_user->state=0;
+              $matched_user->save();
+  	          $user = User::find(Auth::user()->id);
+  	          //$user->state=0;
+              $user->save();
+              $match = new Match;
+              $match->playerOne = Auth::user()->id;
+              $match->playerTwo = $matched_user->id;
+              $match->wager = $wager;
+              $match->save();
+              return redirect()->action('MatchController@show', ['id'=>$match->id]);
+          }
         }
+
 
 	    return View('User/searching', ['matched_user'=>$matched_user, 'wager'=>$wager]);
 

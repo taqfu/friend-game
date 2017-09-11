@@ -1,4 +1,7 @@
-<html><script>
+@extends('layouts.app')
+
+@section('content')
+<script>
 maxNumberOfCharacters=3;
 countdown="...";
 direction=0;
@@ -16,13 +19,13 @@ setInterval(function(){
 	    direction=1;
 	}
 }, 500);
-</script><body>
-<div >
-Searching for another player willing to wager {{$wager}} points<span id='countdown'>...</span>
-</div >
+</script>
 <div >
 
-<a href = "{{route ("home")}}" >Back </a >
+
 </div >
 
-</body></html>
+<div>
+Searching for another player willing to wager {{$wager}} points<span id='countdown'>...</span> <a href = "{{route ("home")}}" >Cancel </a >
+</div >
+@endsection

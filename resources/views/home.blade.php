@@ -7,6 +7,26 @@
   <?php $match_num++?>
 
 @endforeach
-<a href="/searching/0">Match with someone</a> - still need to be point specific
+<strong>Match With Someone & Make A Friend</strong> - Wager:
+  <a href="/searching/0">0 pts.</a>
+  |
+  @if (Auth::user()->points>0)
+      <a href="/searching/1">1 pts.</a>
+  @else
+      1 pts.
+  @endif
+  |
+  @if (Auth::user()->points>9)
+      <a href="/searching/10">10 pts.</a>
+  @else
+      10 pts.
+  @endif
+  |
+  @if (Auth::user()->points>99)
+      <a href="/searching/100">100 pts.</a>
+  @else
+      100 pts.
+  @endif
+  |
 
 @endsection

@@ -14,7 +14,7 @@
     </div>
     <div class='form-group'>
         <input type='text' name='msgInput' id='msgInput' class='form-control' readonly/>
-        <input type='submit' class='btn btn-primary btn-block' value='Send'/>
+        <input type='submit' class='btn btn-primary btn-lg pull-right' value='Send'/>
     </div>
     <script>
     </script>

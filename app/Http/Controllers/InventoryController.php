@@ -9,6 +9,24 @@ use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
+    public function empty(){
+      if (Auth::guest()){
+            return view("need-to-be-logged-in");
+      }
+      $num_of_emojis_in_inventory = count(Inventory::where('user_id', Auth::user()->id)->where('emoji_slot', '>', 0)->get());
+      if ($num_of_emojis_in_inventory >= Auth::user()->emoji_slots){
+        trigger_error("User #" . Auth:: user ()->id . " is attempting to setup inventory but inventory is already setup.");
+      } else if ($num_of_emojis_in_inventory != 0){
+        trigger_error("User #" . Auth:: user ()->id . " already has emoji's in their inventory but not enough..");
+      }
+      for ($slot_num=1; $slot_num <= Auth::user()->emoji_slots; $slot_num++){
+          $inventory = new Inventory;
+          $inventory->emoji_slot = $slot_num;
+          $inventory->user_id = Auth::user()->id;
+          $inventory->save();
+      }
+      return redirect(route("inventory.index"));
+    }
     /**
      * Display a listing of the resource.
      *

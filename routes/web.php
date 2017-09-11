@@ -12,9 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if(Auth::guest()){
+        return view('welcome');
+    }
+        return redirect (route('home'));
 });
 Route::get("/inventory/emoji/create/{slot}", 'InventoryController@create_emoji' )->name('inventory.create-emoji');
+Route::get("inventory/empty", 'InventoryController@empty')->name('inventory.empty');
+Route::get('match/{id}/quit', 'MatchController@quit')->name('match.quit');
 Auth::routes();
 
 Route::get('/searching/{wager}', 'MsgController@searching');

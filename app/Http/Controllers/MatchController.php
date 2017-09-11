@@ -5,6 +5,8 @@ use Auth;
 use App\Inventory;
 use App\Match;
 use App\Msg;
+use App\User;
+
 use Illuminate\Http\Request;
 
 class MatchController extends Controller
@@ -88,5 +90,30 @@ class MatchController extends Controller
     public function destroy(Match $match)
     {
         //
+    }
+
+    public function quit ($id){
+      $match = Match::find($id);
+      if (Auth::guest()){
+            return View('User/need-to-be-logged-in');
+	    }
+      $player_num = Match::which_player_are_they($match, Auth::user()->id);
+      if (!$player_num){
+          trigger_error("Player #" . Auth::user()->id . " is trying to quit a match that they're not even playing.");
+      }
+      if ($match->status==null){
+          $match->status = $player_num + 7;
+          $match->save();
+          return back();
+
+      } else if ($match->status ==8 || $match->status ==9){
+          $match->status -= 5;
+          $match->save();
+          $winning_user_id = $player_num==2 ? $match->playerOne : $match->playerTwo;
+          $user = User::find($winning_user_id);
+          $user->points += $match->wager==0 ? 1 : $match->wager*2;
+          $user->save();
+          return redirect (route('home'));
+      }
     }
 }
