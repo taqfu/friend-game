@@ -13,7 +13,6 @@ class Match extends Model
         return $this->hasOne('App\User', 'id', 'playerOne');
     }
     public static function which_player_are_they($match, $user_id){
-      var_dump($match->playerTwo, $user_id);
         if ($match->playerOne==$user_id){
           return 1;
         } else if ($match->playerTwo==$user_id){

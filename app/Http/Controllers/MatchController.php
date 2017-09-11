@@ -116,4 +116,25 @@ class MatchController extends Controller
           return redirect (route('home'));
       }
     }
+
+    public function cancel_quit($id){
+        $match = Match::find($id);
+        if (Auth::guest()){
+              return View('User/need-to-be-logged-in');
+        }
+        $player_num = Match::which_player_are_they($match, Auth::user()->id);
+        if (!$player_num){
+            trigger_error("Player #" . Auth::user()->id . " is trying to cancel quitting a match that they're not even playing.");
+        }
+        if ($match->status !=8 && $match->status !=9){
+            trigger_error("Player #" . Auth::user()->id . " is trying to cancel quitting a match despite the fact that no one's trying to quit.");
+        }
+        if ($match->status!=$player_num+7){
+            trigger_error("Player #" . Auth::user()->id . " is trying to cancel quitting a match even though the other player's trying to quit.");
+
+        }
+        $match->status=null;
+        $match->save();
+        return back();
+    }
 }

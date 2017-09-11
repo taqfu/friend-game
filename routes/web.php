@@ -20,6 +20,8 @@ Route::get('/', function () {
 Route::get("/inventory/emoji/create/{slot}", 'InventoryController@create_emoji' )->name('inventory.create-emoji');
 Route::get("inventory/empty", 'InventoryController@empty')->name('inventory.empty');
 Route::get('match/{id}/quit', 'MatchController@quit')->name('match.quit');
+Route::get('match/{id}/cancel-quit', 'MatchController@cancel_quit')->name('match.cancel-quit');
+Route::get('match{id}/friend', 'MatchController@friend')->name('match.friend');
 Auth::routes();
 
 Route::get('/searching/{wager}', 'MsgController@searching');
