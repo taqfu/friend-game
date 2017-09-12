@@ -36,7 +36,8 @@ class HomeController extends Controller
         } else if (count ($emojis_in_inventory)>Auth::user()->emoji_slots) {
             trigger_error ("User #" . Auth::user()->id . " Has more emoji's in their inventory than their currently allocated slots.");
         }
-        $matches = Match::where("playerOne", Auth::user()->id)->whereNull("status")->orWhere ("playerTwo", Auth::user()->id)->whereNull("status")->get();
+        $matches = Match::where("playerOne", Auth::user()->id)->where('status', ">", 4)->where("status", "<", 10)->orWhereNull("status")
+          ->orWhere ("playerTwo", Auth::user()->id)->where('status', ">", 4)->where("status", "<", 10)->orWhereNull("status")->get();
         if (Auth::user()->state=!0) {
             $user=User::find(Auth::user()->id);
             $user->state=0;

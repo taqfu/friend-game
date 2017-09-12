@@ -100,6 +100,7 @@ class MsgController extends Controller
         //
     }
     public function searching($wager){
+      //move this to match controller
 	    if (Auth::guest()){
             return View('User/need-to-be-logged-in');
 	    }
@@ -117,22 +118,33 @@ class MsgController extends Controller
 	            $user->updated_at = date('Y-m-d H:i:s');
                 $user->save();
             }
+        } else if (Auth::user()->state==2){
+            //TO DO create a field to show when player 2 enters and have them enter the first chat room they haven't entered
+            $user = User::find(Auth::user()->id);
+            $user->state=0;
+            $user->save();
+            return redirect(route("match.show", ['id'=>$match_id]));
+
         }
         $matched_user = User::where('id', '!=', Auth::user()->id)->where('state', TRUE)->inRandomOrder()->first();
 
+
         if (!empty($matched_user)){
+          //there's a bug where the other player isn't being forwarded because they're treating ti like there already matched - maybe create a field to indicate that the player has entered the match
+              //->where ("created_at", "<", date("Y-m-d H:i:s", strtotime("-1 min")))
           $are_they_already_matched =
-            count(Match:: whereNull('status')->where ("playerOne",$matched_user->id)
-              ->where("playerTwo", Auth::user()->id)->get ())>0
-            || count(Match:: whereNull('status')->where ("playerOne",Auth::user()->id)
-              ->where("playerTwo", $matched_user->id)->get ())>0;
-              var_dump(count(Match:: whereNull('status')->where ("playerOne",$matched_user->id)
-                ->where("playerTwo", Auth::user()->id)->get ())>0);
+            count(Match:: whereNull('status')
+              ->where ("playerOne",$matched_user->id)->where("playerTwo", Auth::user()->id)->get ())>0
+            || count(Match:: whereNull('status')
+              ->where ("playerOne",Auth::user()->id)->where("playerTwo", $matched_user->id)->get ())>0;
+
+
           if (!$are_they_already_matched){
-              //$matched_user->state=0;
+
+              $matched_user->state=2;
               $matched_user->save();
   	          $user = User::find(Auth::user()->id);
-  	          //$user->state=0;
+  	          $user->state=0;
               $user->save();
               $match = new Match;
               $match->playerOne = Auth::user()->id;

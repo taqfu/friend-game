@@ -28,5 +28,8 @@
       100 pts.
   @endif
   |
+<h3>
+  Past Matches:
+</h3>
 
 @endsection
