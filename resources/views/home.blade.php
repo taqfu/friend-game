@@ -1,7 +1,13 @@
-<?php $match_num=1 ?>
+<?php
+$past_match_num=1;
+$match_num=1;
+?>
 @extends('layouts.app')
 
 @section('content')
+@if (count($matches)>0)
+<h3>Active Matches:</h3>
+@endif
 @foreach($matches as $match)
   <div><a href= "{{route('match.show', ['id'=>$match ->id])}}" >Match #{{$match_num}}</a> - started on {{date ("m/d/Y H:i:s", strtotime ($match ->created_at))}}</div>
   <?php $match_num++?>
@@ -28,8 +34,17 @@
       100 pts.
   @endif
   |
+
+@if (count($past_matches)>0)
 <h3>
   Past Matches:
 </h3>
+@endif
+
+@foreach($past_matches as $past_match)
+  <div><a href= "{{route('match.show', ['id'=>$past_match->id])}}" >Match #{{$match_num}}</a> - started on {{date ("m/d/Y H:i:s", strtotime ($past_match->created_at))}}</div>
+  <?php $past_match_num++?>
+
+@endforeach
 
 @endsection

@@ -30,7 +30,7 @@ class HomeController extends Controller
         if (Auth::guest()){
               return view("need-to-be-logged-in");
         }
-        $emojis_in_inventory = Inventory::where('user_id', Auth::user()->id)->where('emoji_slot', '>', 0)->get();
+        $emojis_in_inventory = Inventory::where('user_id', Auth::user()->id)->whereNotNull('emoji_id')->where('emoji_slot', '>', 0)->get();
         if (count ($emojis_in_inventory)<Auth::user()->emoji_slots) {
             return redirect(route("inventory.index"));
         } else if (count ($emojis_in_inventory)>Auth::user()->emoji_slots) {
@@ -38,11 +38,17 @@ class HomeController extends Controller
         }
         $matches = Match::where("playerOne", Auth::user()->id)->where('status', ">", 4)->where("status", "<", 10)->orWhereNull("status")
           ->orWhere ("playerTwo", Auth::user()->id)->where('status', ">", 4)->where("status", "<", 10)->orWhereNull("status")->get();
-        if (Auth::user()->state=!0) {
+
+        $past_matches = Match::where("playerOne", Auth::user()->id)->where('status', "<", 5)->where("status",  10)
+          ->orWhere ("playerTwo", Auth::user()->id)->where('status', "<", 5)->where("status",  10)->get();
+        if (Auth::user()->status=!0) {
             $user=User::find(Auth::user()->id);
-            $user->state=0;
+            $user->status=0;
             $user->save();
         }
-        return view('home', ["matches"=>$matches]);
+        return view('home', [
+          "matches"=>$matches,
+          "past_matches"=>$past_matches,
+        ]);
     }
 }

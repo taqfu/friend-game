@@ -1,3 +1,7 @@
+<?php
+    use \App\Friend;
+
+    ?>
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
@@ -28,7 +32,6 @@
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
-
                 <div class='nav pull-right'>
 
                         @if (Auth::guest())
@@ -37,6 +40,8 @@
                         @else
 
                                     {{ Auth::user()->username }} - {{Auth::user()->points}} points
+                                    /
+                                    {{Friend::fetch_num_of_friends()}} friends
                                 </a>
 
                                         <a href="{{ route('logout') }}"

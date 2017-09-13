@@ -6,7 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /*
-state
+status
 0 - not looking for a match
 1 - looking for a match
 2 - needs to join

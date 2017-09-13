@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 /*
 0 - both abandoned
@@ -17,6 +17,13 @@ use Illuminate\Database\Eloquent\Model;
 */
 class Match extends Model
 {
+    public static function does_user_have_active_match(){
+        return (count(Match:: where("status", ">", 4)->where('status', "<", 10)->where ("playerTwo",Auth::user()->id)
+        ->orWhereNull('status')->where ("playerTwo",Auth::user()->id)->get ())>0
+
+          || count(Match:: where("status", ">", 4)->where('status', "<", 10)->where ("playerOne",Auth::user()->id)
+          ->orWhereNull('status')->where ("playerOne",Auth::user()->id)->get ())>0);
+    }
     public function firstPlayer(){
         return $this->hasOne('App\User', 'id', 'playerOne');
     }

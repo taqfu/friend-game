@@ -2,7 +2,11 @@
     use \App\Match;
     $player_num = Match::which_player_are_they($match, Auth::user()->id);
     $point_caption = $match->wager>1 || $match->wager==0 ? "points" : "point";
-    $quit_button_caption =  ($match->status==8 || $match->status==9) ? "Surrender" : "Offer withdrawl.";
+    if ($match->status==8 || $match->status==9){
+        $quit_button_caption = ($player_num+7==$match->status) ? "Surrender" : "Accept Surrender";
+    } else {
+        $quit_button_caption =  "Offer withdrawl.";
+    }
     $friend_button_caption = (($player_num==1 && $match->status==6) || ($player_num==2 && $match->status==5)) ? "Accept Friend Request" : "+Friend";
     $cancel_friend_button_caption = (($player_num==1 && $match->status==6) || ($player_num==2 && $match->status==5)) ? "Reject Friend Request" : "Cancel Friend Request";
 
@@ -28,7 +32,8 @@
   <form method="GET" action="{{route('match.cancel-friend', ['id'=>$match->id])}}" class="form-inline">
       <input type='submit' class='btn btn-danger btn-lg pull-left' value="{{$cancel_friend_button_caption}}" />
   </form>
-  @endif
+
+@endif
 @if ($match->status !=5 && $match->status !=6)
   <form method="GET" action="{{route('match.quit', ['id'=>$match->id])}}" class="form-inline">
     <input type='submit' class='btn btn-danger btn-lg pull-right' value="{{$quit_button_caption}}" />
@@ -62,9 +67,11 @@
         @endif
 
 @empty
-<div class='text-center'>
-    <i>Neither of you have said anything. Say something! Make a friend!</i>
-  </div>
+    @if ($match->status > 4 && $match->status<10)
+        <div class='text-center'>
+            <i>Neither of you have said anything. Say something! Make a friend!</i>
+        </div>
+    @endif
 @endforelse
 <div class='text-danger'>
 @foreach ($errors->all() as $error)
@@ -76,5 +83,14 @@
 @else
     <h2 class='text-center'>This is the win or lose message.</h1>
 @endif
+
+
 </div>
+@if (($player_num==1 && $match->status==6) || ($player_num==2 && $match->status==5))
+    <h3 class='text-center clearfix'>They want to make friends! Accept and get more emojis to use! Refuse and win your wager.</h3>
+@elseif (($match->status ==8 || $match->status ==9) && $match->status!=$player_num+7)
+    <h3 class='text-center clearfix'>They want to quit. Quit with them and no one loses any points.</h3>
+    <h3 class='text-center clearfix'>Or wait til they leave on their own and win, ya big meanie.</h3>
+
+@endif
 @endsection
