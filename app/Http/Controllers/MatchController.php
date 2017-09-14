@@ -224,7 +224,21 @@ class MatchController extends Controller
         $match->save();
         return back();
     }
-
+    public function menu($id){
+        if (Auth::guest()){
+              return View('User/need-to-be-logged-in');
+        }
+        $match = Match::find($id);
+        if (Auth::user()->id != $match->playerOne && Auth::user()->id != $match->playerTwo){
+            trigger_error("You are not involved in this match.");
+        }
+        return view('Match.menu', ["match"=>$match]);
+    }
+    public function new_msgs($id, $num_of_old_msgs){
+        $match = Match::find($id);
+        $messages = Msg::where('match_id', $id)->orderBy('created_at', 'desc')->take(Match::fetch_num_of_msgs($id)-$num_of_old_msgs)->get();
+        return view('Msg.index', ['messages'=>$messages, "match"=>$match]);
+    }
     public function searching($wager){
       //move this to match controller
 	    if (Auth::guest()){
@@ -286,5 +300,27 @@ class MatchController extends Controller
         }
 	    return View('User/searching', ['matched_user'=>$matched_user, 'wager'=>$wager]);
 
+    }
+
+    public function status($id){
+        if (Auth::guest()){
+              return View('User/need-to-be-logged-in');
+        }
+        $match = Match::find($id);
+        if (Auth::user()->id != $match->playerOne && Auth::user()->id != $match->playerTwo){
+            trigger_error("You are not involved in this match.");
+        }
+        echo json_encode([$match->status, Match::fetch_num_of_msgs($match->id)]);
+    }
+    public function status_msg($id){
+      if (Auth::guest()){
+            return View('User/need-to-be-logged-in');
+      }
+      $match = Match::find($id);
+      if (Auth::user()->id != $match->playerOne && Auth::user()->id != $match->playerTwo){
+          trigger_error("You are not involved in this match.");
+      }
+        $match = Match::find($id);
+        return view ("Match.statusMsg", ["match"=>$match]);
     }
 }

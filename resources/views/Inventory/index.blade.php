@@ -27,7 +27,7 @@
             @else
             <form action="{{route('inventory.create-emoji', ['slot'=>$emoji_in_inventory->emoji_slot])}}">
               <input type= "submit" value="{!!$button_caption!!}"/>
-              @if (Inventory::is_this_a_duplicate($emoji_in_inventory->emoji_id))
+              @if ($emoji_in_inventory->emoji_id!=null && Inventory::is_this_a_duplicate($emoji_in_inventory->emoji_id))
                   <span class='text-danger'>Duplicate!</span>
               @endif
             </form>

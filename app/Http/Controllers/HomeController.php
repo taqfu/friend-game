@@ -39,8 +39,7 @@ class HomeController extends Controller
         $matches = Match::where("playerOne", Auth::user()->id)->where('status', ">", 4)->where("status", "<", 10)->orWhereNull("status")
           ->orWhere ("playerTwo", Auth::user()->id)->where('status', ">", 4)->where("status", "<", 10)->orWhereNull("status")->get();
 
-        $past_matches = Match::where("playerOne", Auth::user()->id)->where('status', "<", 5)->where("status",  10)
-          ->orWhere ("playerTwo", Auth::user()->id)->where('status', "<", 5)->where("status",  10)->get();
+        $past_matches = Match::where("playerOne", Auth::user()->id)->orWhere ("playerTwo", Auth::user()->id)->where('status', "<", 5)->where("status", ">",  9)->get();
         if (Auth::user()->status=!0) {
             $user=User::find(Auth::user()->id);
             $user->status=0;

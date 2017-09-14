@@ -2,7 +2,10 @@
     font-family: "Symbola";
     src: url("/Symbola.ttff");
 }
-
+#matchMsgs {
+  height:200px;
+  overflow:scroll;
+}
 .emoji{
   font-size:25px;;
   font-family: "Symbola";

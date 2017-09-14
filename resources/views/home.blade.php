@@ -1,18 +1,22 @@
 <?php
+use \App\Match;
 $past_match_num=1;
 $match_num=1;
 ?>
 @extends('layouts.app')
 
 @section('content')
-@if (count($matches)>0)
-<h3>Active Matches:</h3>
-@endif
-@foreach($matches as $match)
-  <div><a href= "{{route('match.show', ['id'=>$match ->id])}}" >Match #{{$match_num}}</a> - started on {{date ("m/d/Y H:i:s", strtotime ($match ->created_at))}}</div>
-  <?php $match_num++?>
-
-@endforeach
+<div class='clearfix form-group'>
+    <form method="GET" action="{{route('home')}}" class="form-inline">
+        <input type='submit' class='btn btn-primary btn-lg pull-left' value="Home" />
+    </form>
+    <form method="GET" action="{{route('inventory.index')}}" class="form-inline">
+        <input type='submit' class='btn btn-primary btn-lg pull-left' value="Inventory" />
+    </form>
+    <form method="GET" action="{{route('friend.index')}}" class="form-inline">
+        <input type='submit' class='btn btn-primary btn-lg pull-left' value="Friends" />
+    </form>
+</div>
 <strong>Match With Someone & Make A Friend</strong> - Wager:
   <a href="/searching/0">0 pts.</a>
   |
@@ -35,6 +39,16 @@ $match_num=1;
   @endif
   |
 
+@if (count($matches)>0)
+<h3>Active Matches:</h3>
+@endif
+@foreach($matches as $match)
+    <a title="{{date ("m/d/Y H:i:s e", strtotime ($match->created_at))}} " href= "{{route('match.show', ['id'=>$match->id])}}"> #{{$match->id}} </a>
+    - {{Match::display_status_msg($match->id)}}
+
+@endforeach
+
+
 @if (count($past_matches)>0)
 <h3>
   Past Matches:
@@ -42,8 +56,11 @@ $match_num=1;
 @endif
 
 @foreach($past_matches as $past_match)
-  <div><a href= "{{route('match.show', ['id'=>$past_match->id])}}" >Match #{{$match_num}}</a> - started on {{date ("m/d/Y H:i:s", strtotime ($past_match->created_at))}}</div>
-  <?php $past_match_num++?>
+  <div>
+      <a title="{{date ("m/d/Y H:i:s e", strtotime ($past_match->created_at))}} " href= "{{route('match.show', ['id'=>$past_match->id])}}"> #{{$past_match->id}} </a>
+       - {{Match::display_status_msg($past_match->id)}}
+  </div>
+
 
 @endforeach
 
