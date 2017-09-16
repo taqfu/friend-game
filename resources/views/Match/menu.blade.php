@@ -15,7 +15,7 @@ $cancel_friend_button_caption = (($player_num==1 && $match->status==6) || ($play
 <form method="GET" action="{{route('home')}}" class="form-inline">
     <input type='submit' class='btn btn-primary btn-lg pull-left' value="Home" />
 </form>
-@if ($match->status==null || (($player_num==1 && $match->status==6) || ($player_num==2 && $match->status==5)) ||  (($match->status ==8 || $match->status ==9) && $match->status!=$player_num+7))
+@if ($match->status==999 || (($player_num==1 && $match->status==6) || ($player_num==2 && $match->status==5)) ||  (($match->status ==8 || $match->status ==9) && $match->status!=$player_num+7))
 <form method="GET" action="{{route('match.friend', ['id'=>$match->id])}}" class="form-inline">
     <input type='submit' class='btn btn-primary btn-lg pull-left' value="{{$friend_button_caption}}" />
 </form>

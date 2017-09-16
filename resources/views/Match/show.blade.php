@@ -10,7 +10,7 @@
 
 @section('content')
 <input id="matchID" type='hidden' value="{{$match->id}}" />
-<input id="matchStatus" type='hidden' value="{{$match->status==null ? 'null' : $match->status}}" />
+<input id="matchStatus" type='hidden' value="{{$match->status==999 ? 'null' : $match->status}}" />
 <input id="numOfMsgs" type='hidden'  value='{{Match::fetch_num_of_msgs($match->id)}}' />
 
 <div id='matchMenu' class='clearfix'>
@@ -31,7 +31,7 @@
   {{$error}}
 @endforeach
 </div>
-@if ($match->status==null || ($match->status>4 && $match->status<10))
+@if ($match->status==999 || ($match->status>4 && $match->status<10))
 @include ('Msg.create', ['match_id'=>$match->id])
 @else
     <h2 class='text-center'>This is the win or lose message.</h1>

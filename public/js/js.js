@@ -22,7 +22,7 @@ $(document.body).ready(function () {
 
 function checkForUpdate(){
     matchID = $("#matchID").val();
-    statusArr = [$("#matchStatus").val()=="null" ? null : $("#matchStatus").val(), Number($("#numOfMsgs").val())];
+    statusArr = [Number($("#matchStatus").val()), Number($("#numOfMsgs").val())];
     console.log("/match/" + matchID + "/status");
     $.get("/match/" + matchID + "/status", function (data){
       arr=JSON.parse(data);

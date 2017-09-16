@@ -43,6 +43,20 @@ class MsgController extends Controller
         "matchID" => "required | integer",
         "msgInput"=>"required"
       ]);
+
+      if (Auth::guest()){
+            return View('User/need-to-be-logged-in');
+      }
+
+      $match = Match::find($request->matchID);
+
+      if (count($match)==0){
+          trigger_error("There is no match of the ID #" . $request->match_id);
+      }
+      if (Auth::user()->id != $match->playerOne && Auth::user()->id != $match->playerTwo){
+          trigger_error("You are not involved in this match.");
+      }
+
       //validate if message contains the appropriate characters
 
       $message = new Msg;
@@ -99,6 +113,6 @@ class MsgController extends Controller
     {
         //
     }
-    
+
 
 }

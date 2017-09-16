@@ -25,7 +25,7 @@ class MatchController extends Controller
        if (!$player_num){
            trigger_error("Player #" . Auth::user()->id . " is trying to become friends in a match that they're not even playing.");
        }
-       if ($match->status!=null && $match->status != 5 && $match->status!=6){
+       if ($match->status!=999 && $match->status != 5 && $match->status!=6){
          trigger_error("Player #" . Auth::user()->id . " is trying to become friends in a match but its not the appropriate status for that.");
        }
        if ($match->status == $player_num+4){
@@ -35,7 +35,7 @@ class MatchController extends Controller
        if ($are_they_already_friends){
           trigger_error("Player #" . $match->playerOne . " and player #" . $match->playerTwo . " are already friends. ");
        }
-       if ($match->status==null){
+       if ($match->status==999){
          $match->status = $player_num+4;
          $match->save();
          return back();
@@ -82,7 +82,7 @@ class MatchController extends Controller
           $user->save();
           return back();
        }
-       $match->status=null;
+       $match->status=999;
        $match->save();
        return back();
      }
@@ -181,7 +181,7 @@ class MatchController extends Controller
       if (!$player_num){
           trigger_error("Player #" . Auth::user()->id . " is trying to quit a match that they're not even playing.");
       }
-      if ($match->status==null){
+      if ($match->status==999){
           $match->status = $player_num + 7;
           $match->save();
           return back();
@@ -224,7 +224,7 @@ class MatchController extends Controller
             trigger_error("Player #" . Auth::user()->id . " is trying to cancel quitting a match even though the other player's trying to quit.");
 
         }
-        $match->status=null;
+        $match->status=999;
         $match->save();
         return back();
     }
@@ -279,9 +279,9 @@ class MatchController extends Controller
         if (!empty($matched_user && !$are_they_already_friends)){
 
           $are_they_already_matched =
-            count(Match:: whereNull('status')
+            count(Match:: where('status', 999)
               ->where ("playerOne",$matched_user->id)->where("playerTwo", Auth::user()->id)->get ())>0
-            || count(Match:: whereNull('status')
+            || count(Match:: wwhere('status', 999)
               ->where ("playerOne",Auth::user()->id)->where("playerTwo", $matched_user->id)->get ())>0;
 
 

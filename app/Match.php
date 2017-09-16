@@ -28,7 +28,7 @@ class Match extends Model
             return $player_num==$match->status ? "You won $num_of_points_won points." : "You lost $match->wager points.";
         } else if ($match->status==3 || $match->status==4){
             return $player_num+2==$match->status ? "They quit and you won $num_of_points_won points." : "You quit and lost $match->wager points.";
-        } else if ($match->status===0 && $match->status!==null){
+        } else if ($match->status===0 && $match->status!==999){
             return "Both players quit.";
         } else if ($match->status==10){
               return "You became friends with $other_player->username.";
@@ -39,10 +39,10 @@ class Match extends Model
     }
     public static function does_user_have_active_match(){
         return (count(Match:: where("status", ">", 4)->where('status', "<", 10)->where ("playerTwo",Auth::user()->id)
-        ->orWhereNull('status')->where ("playerTwo",Auth::user()->id)->get ())>0
+        ->orWhere('status', 999)->where ("playerTwo",Auth::user()->id)->get ())>0
 
           || count(Match:: where("status", ">", 4)->where('status', "<", 10)->where ("playerOne",Auth::user()->id)
-          ->orWhereNull('status')->where ("playerOne",Auth::user()->id)->get ())>0);
+          ->orWhere('status', 999)->where ("playerOne",Auth::user()->id)->get ())>0);
     }
     public static function fetch_num_of_msgs($id){
         return count(Msg::where('match_id', $id)->get());
