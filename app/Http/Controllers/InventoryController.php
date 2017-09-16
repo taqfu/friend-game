@@ -34,6 +34,9 @@ class InventoryController extends Controller
      */
     public function index()
     {
+      if (Auth::guest()){
+            return View('User/need-to-be-logged-in');
+      }
       return view("Inventory.index", [
         "emojis_in_inventory"=>Inventory::where("user_id", Auth:: user ()->id)->where("emoji_slot", ">", 0)->orderBy("emoji_slot", "asc")->get (),
 

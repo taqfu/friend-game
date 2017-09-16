@@ -32,7 +32,7 @@
 @endforeach
 </div>
 @if ($match->status==999 || ($match->status>4 && $match->status<10))
-@include ('Msg.create', ['match_id'=>$match->id])
+@include ('Match.Msg.create', ['match_id'=>$match->id])
 @else
     <h2 class='text-center'>This is the win or lose message.</h1>
 @endif

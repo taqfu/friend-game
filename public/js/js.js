@@ -23,7 +23,6 @@ $(document.body).ready(function () {
 function checkForUpdate(){
     matchID = $("#matchID").val();
     statusArr = [Number($("#matchStatus").val()), Number($("#numOfMsgs").val())];
-    console.log("/match/" + matchID + "/status");
     $.get("/match/" + matchID + "/status", function (data){
       arr=JSON.parse(data);
       if (arr[0]!=statusArr[0]){
@@ -36,8 +35,8 @@ function checkForUpdate(){
               setTimeout(scrollToTheBottom, 500);
       }
 
-      console.log(matchID, arr[0]==statusArr[0], typeof arr[0], arr[0], typeof statusArr[0], statusArr[0]);
-      console.log(matchID, arr[1]==statusArr[1], typeof arr[1], arr[1], typeof statusArr[1], statusArr[1]);
+      //console.log(matchID, arr[0]==statusArr[0], typeof arr[0], arr[0], typeof statusArr[0], statusArr[0]);
+      //console.log(matchID, arr[1]==statusArr[1], typeof arr[1], arr[1], typeof statusArr[1], statusArr[1]);
     });
 }
 function getNewMessages(matchID, numOfOldMsgs){
@@ -57,11 +56,9 @@ function refreshStatus(matchID){
 
 }
 function scrollToTheBottom(){
-  console.log("START", $("#matchMsgs")[0].scrollTop, $("#matchMsgs")[0].scrollHeight);
-  var myDiv = $("#matchMsgs").get(0);
-myDiv.scrollTop = myDiv.scrollHeight;
+    var myDiv = $("#matchMsgs").get(0);
+    myDiv.scrollTop = myDiv.scrollHeight;
 
-console.log("END", $("#matchMsgs")[0].scrollTop, $("#matchMsgs")[0].scrollHeight);
 
 
 }

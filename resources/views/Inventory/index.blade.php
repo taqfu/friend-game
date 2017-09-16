@@ -5,11 +5,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class='clearfix'>
-    <form method="GET" action="{{route('home')}}" class="form-inline">
-        <input type='submit' class='btn btn-primary btn-lg pull-left' value="Home" />
-    </form>
-</div>
+@include('menu')
+
 <h1 class='text-center'>Inventory</h1>
 
 <h2>Your Emojis</h2>
@@ -23,7 +20,7 @@
                 ? "Please click here to add an emoji to your inventory" : "&#x1f".$emoji_in_inventory->emoji->unicode;
             ?>
             @if (Match::does_user_have_active_match())
-              sfsdfs
+                {!!$button_caption!!} - Locked due to an active match
             @else
             <form action="{{route('inventory.create-emoji', ['slot'=>$emoji_in_inventory->emoji_slot])}}">
               <input type= "submit" value="{!!$button_caption!!}"/>

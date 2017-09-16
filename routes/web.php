@@ -39,3 +39,4 @@ Route::resource('/friend', 'FriendController');
 Route::resource('/inventory', 'InventoryController');
 Route::resource('/match', 'MatchController');
 Route::resource('/message', 'MsgController');
+Route::resource('/user', 'UserController');
