@@ -36,17 +36,22 @@ class HomeController extends Controller
         } else if (count ($emojis_in_inventory)>Auth::user()->emoji_slots) {
             trigger_error ("User #" . Auth::user()->id . " Has more emoji's in their inventory than their currently allocated slots.");
         }
-        $matches = Match::where("playerOne", Auth::user()->id)->where('status', ">", 4)->where("status", "<", 10)->orWhereNull("status")
-          ->orWhere ("playerTwo", Auth::user()->id)->where('status', ">", 4)->where("status", "<", 10)->orWhereNull("status")->get();
+        $active_statuses_arr = [5, 6, 7, 8, 9, 999];
+        $matches = Match::where("playerOne", Auth::user()->id)->whereIn('status', $active_statuses_arr)
+          ->orWhere("playerTwo", Auth::user()->id)->whereIn('status', $active_statuses_arr)->get();
 
-        $past_matches = Match::where("playerOne", Auth::user()->id)->orWhere ("playerTwo", Auth::user()->id)->where('status', "<", 5)->where("status", ">",  9)->get();
+        $past_matches = Match::where("playerOne", Auth::user()->id)->whereNotIn('status', $active_statuses_arr)
+          ->orWhere("playerTwo", Auth::user()->id)->whereNotIn('status', $active_statuses_arr)->get();
+
+
+
         if (Auth::user()->status=!0) {
             $user=User::find(Auth::user()->id);
             $user->status=0;
             $user->save();
         }
         return view('home', [
-          "matches"=>$matches,
+          "matches"=>$matches->all(),
           "past_matches"=>$past_matches,
         ]);
     }

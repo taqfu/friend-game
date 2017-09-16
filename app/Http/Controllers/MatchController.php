@@ -126,6 +126,10 @@ class MatchController extends Controller
       if (Auth::guest()){
             return View('User/need-to-be-logged-in');
       }
+
+      if (Auth::user()->id != $match->playerOne && Auth::user()->id != $match->playerTwo){
+          trigger_error("You are not involved in this match.");
+      }
         $messages = Msg::where('match_id', $match->id)->get();
         return View('Match/show', [
           'match'=>$match,

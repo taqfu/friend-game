@@ -23,11 +23,12 @@ class Match extends Model
         $num_of_points_won  = $match->wager==0 ? 1 : $match->wager*2;
         $player_num = Match::which_player_are_they($match, Auth::user()->id);
         $other_player = User::find (Match::whos_other_player($match, Auth::user()->id));
+
         if ($match->status==1 || $match->status==2){
             return $player_num==$match->status ? "You won $num_of_points_won points." : "You lost $match->wager points.";
         } else if ($match->status==3 || $match->status==4){
             return $player_num+2==$match->status ? "They quit and you won $num_of_points_won points." : "You quit and lost $match->wager points.";
-        } else if ($match->status!=null && $match->status==0){
+        } else if ($match->status===0 && $match->status!==null){
             return "Both players quit.";
         } else if ($match->status==10){
               return "You became friends with $other_player->username.";

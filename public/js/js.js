@@ -23,6 +23,7 @@ $(document.body).ready(function () {
 function checkForUpdate(){
     matchID = $("#matchID").val();
     statusArr = [$("#matchStatus").val()=="null" ? null : $("#matchStatus").val(), Number($("#numOfMsgs").val())];
+    console.log("/match/" + matchID + "/status");
     $.get("/match/" + matchID + "/status", function (data){
       arr=JSON.parse(data);
       if (arr[0]!=statusArr[0]){
@@ -30,13 +31,13 @@ function checkForUpdate(){
           $("#matchStatus").val(arr[0]);
       }
       if (arr[1]!=statusArr[1]){
-
-          getNewMessages(matchID, statusArr[1] );
-          $("#numOfMsgs").val(arr[1]);
-          scrollToTheBottom();
+              getNewMessages(matchID, statusArr[1]);
+              $("#numOfMsgs").val(arr[1]);
+              setTimeout(scrollToTheBottom, 500);
       }
-      //console.log(arr[0]==statusArr[0], typeof arr[0], arr[0], typeof statusArr[0], statusArr[0]);
-      //console.log(arr[1]==statusArr[1], typeof arr[1], arr[1], typeof statusArr[1], statusArr[1]);
+
+      console.log(matchID, arr[0]==statusArr[0], typeof arr[0], arr[0], typeof statusArr[0], statusArr[0]);
+      console.log(matchID, arr[1]==statusArr[1], typeof arr[1], arr[1], typeof statusArr[1], statusArr[1]);
     });
 }
 function getNewMessages(matchID, numOfOldMsgs){
