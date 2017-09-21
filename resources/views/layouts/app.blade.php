@@ -35,8 +35,8 @@
                 <div class='nav pull-right'>
 
                         @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
+                            <a href="{{ route('login') }}">Login</a>
+                            <a href="{{ route('register') }}">Register</a>
                         @else
 
                                     {{ Auth::user()->username }} - {{Auth::user()->points}} points

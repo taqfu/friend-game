@@ -27,7 +27,7 @@ class Match extends Model
         if ($match->status==1 || $match->status==2){
             return $player_num==$match->status ? "You won $num_of_points_won points." : "You lost $match->wager points.";
         } else if ($match->status==3 || $match->status==4){
-            return $player_num+2==$match->status ? "They quit and you won $num_of_points_won points." : "You quit and lost $match->wager points.";
+            return $player_num+2==$match->status ? "You quit and lost $match->wager points." : "They quit and you won $num_of_points_won points.";
         } else if ($match->status===0 && $match->status!==999){
             return "Both players quit.";
         } else if ($match->status==10){

@@ -26,15 +26,11 @@
         @include ('Msg.index')
     </div>
 
-<div class='text-danger'>
-@foreach ($errors->all() as $error)
-  {{$error}}
-@endforeach
-</div>
+
 @if ($match->status==999 || ($match->status>4 && $match->status<10))
-@include ('Match.Msg.create', ['match_id'=>$match->id])
+    @include ('Match.Msg.create', ['match_id'=>$match->id])
 @else
-    <h2 class='text-center'>This is the win or lose message.</h1>
+    <h2 class='text-center'>{{Match::display_status_msg($match->id)}}</h1>
 @endif
 
 
